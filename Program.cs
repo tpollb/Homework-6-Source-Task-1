@@ -83,7 +83,11 @@ namespace Homework_6_Source_Task_1
                 sw.Close();
             }
         }
-
+        /// <summary>
+        /// Метод архивации файла
+        /// </summary>
+        /// <param name="OutFile">Путь до файла, который заархивировать</param>
+        /// <param name="CompressedFileName">Путь до файла вывода</param>
         public static void CompressFile(string OutFile, string CompressedFileName)
         {
             using (FileStream ss = new FileStream(OutFile, FileMode.OpenOrCreate))
