@@ -97,8 +97,11 @@ namespace Homework_6_Source_Task_1
                     using (GZipStream cs = new GZipStream(ts, CompressionMode.Compress))
                     {
                         ss.CopyTo(cs);
+                        cs.Close();
                     }
+                    ts.Close();
                 }
+                ss.Close();
             }
         }
         static void Main(string[] args)
@@ -107,7 +110,7 @@ namespace Homework_6_Source_Task_1
             int i = 1;
             string input;
             int FirstInput = 3;
-            string FilePath = "0";
+            string FilePath = @"db.txt";
             string OutFileName = @"out.txt";
             string OutDirectory = "0";
             char key;
@@ -130,11 +133,13 @@ namespace Homework_6_Source_Task_1
             if (FirstInput == 1)
             {
                 //проверка существования файла
+                /*
                 while (!File.Exists(FilePath) || GetNumber(FilePath) == 0)
                 {
                     Console.WriteLine(@"Введите путь до файла в формате C:\Dir\Subdir\file.txt Файл должен содержать только число в начале первой строки");
                     FilePath = Console.ReadLine();
                 }
+                */
 
                 //начало замера время выполнения 
                 Stopwatch stopWatch = new Stopwatch();
@@ -145,11 +150,10 @@ namespace Homework_6_Source_Task_1
                 //конец замера время выполнения 
                 stopWatch.Stop();
                 Console.WriteLine($"Время выполнения: {stopWatch.ElapsedMilliseconds / 1000} секунд {stopWatch.ElapsedMilliseconds} миллисекунд");
-
-
             } else //режим 2
             {
                 //проверка существования директории
+                /*
                 while (!Directory.Exists(OutDirectory))
                 {
                     Console.WriteLine(@"Введите путь до директории вывода в формате C:\Dir\Subdir\");
@@ -161,12 +165,13 @@ namespace Homework_6_Source_Task_1
                     Console.WriteLine(@"Введите имя файла в формате file.txt Файл должен содержать только число в начале первой строки");
                     FilePath = $"{OutDirectory}{Console.ReadLine()}";
                 }
+                */
 
                 //начало замера время выполнения 
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
 
-                string OutFile = $"{OutDirectory}{OutFileName}";
+                string OutFile = $"{OutFileName}";
                 WriteFile(OutFile, string.Join("\r\n", GroupsNumbers(GetNumber(FilePath)).Select(gr => string.Join(", ", gr))));
 
                 //конец замера время выполнения 
@@ -180,7 +185,7 @@ namespace Homework_6_Source_Task_1
                     //начало замера время выполнения 
                     stopWatch.Start();
 
-                    string compressed = $"{OutDirectory}out.zip";
+                    string compressed = $"out.zip";
                     CompressFile(OutFile, compressed);
 
                     stopWatch.Stop();
