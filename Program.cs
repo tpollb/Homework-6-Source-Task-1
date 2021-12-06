@@ -47,7 +47,7 @@ namespace Homework_6_Source_Task_1
                     group.RemoveAll(x => x != group[i] && x % group[i] == 0);
                 }
 
-                Console.WriteLine(string.Join("\t", group));
+                //Console.WriteLine(string.Join("\t", group));
 
                 using (StreamWriter sw = new StreamWriter(filepath, true, System.Text.Encoding.Default))
                 {
