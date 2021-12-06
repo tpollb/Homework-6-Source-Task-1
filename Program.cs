@@ -9,12 +9,13 @@ namespace Homework_6_Source_Task_1
 {
     class Program
     {
+
         /// <summary>
         /// метод, определяющий свойсво делимости
         /// </summary>
         /// <param name="number">числа</param>
         /// <returns></returns>
-        public static List<List<int>> GroupsNumbers(int number)
+        public static List<List<int>> GroupsNumbers(int number, string filepath)
         {
             List<List<int>> groups = new List<List<int>>();
             
@@ -45,9 +46,18 @@ namespace Homework_6_Source_Task_1
                 {
                     group.RemoveAll(x => x != group[i] && x % group[i] == 0);
                 }
-                    
+
+                Console.WriteLine(string.Join("\t", group));
+
+                using (StreamWriter sw = new StreamWriter(filepath, true, System.Text.Encoding.Default))
+                {
+                    sw.WriteLine($"{string.Join("\t", group)}");
+                    sw.Close();
+                }
+
                 groups.Add(group);
                 numbers.RemoveAll(x => group.Contains(x));
+                 
             }
             return groups;
         }
@@ -70,6 +80,8 @@ namespace Homework_6_Source_Task_1
 
             return result;
         }
+
+        /*
         /// <summary>
         /// Метод записи строки в файл
         /// </summary>
@@ -83,6 +95,8 @@ namespace Homework_6_Source_Task_1
                 sw.Close();
             }
         }
+        */
+
         /// <summary>
         /// Метод архивации файла
         /// </summary>
@@ -107,12 +121,10 @@ namespace Homework_6_Source_Task_1
         static void Main(string[] args)
         {
             bool flag = default;
-            int i = 1;
             string input;
             int FirstInput = 3;
             string FilePath = @"db.txt";
             string OutFileName = @"out.txt";
-            string OutDirectory = "0";
             char key;
 
             Console.ForegroundColor = ConsoleColor.Red;
@@ -132,19 +144,18 @@ namespace Homework_6_Source_Task_1
             //режим 1
             if (FirstInput == 1)
             {
-                //проверка существования файла
-                /*
-                while (!File.Exists(FilePath) || GetNumber(FilePath) == 0)
-                {
-                    Console.WriteLine(@"Введите путь до файла в формате C:\Dir\Subdir\file.txt Файл должен содержать только число в начале первой строки");
-                    FilePath = Console.ReadLine();
-                }
-                */
-
+                
                 //начало замера время выполнения 
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
 
+                if (!File.Exists(FilePath))
+                {
+                    Console.WriteLine($"Файл {FilePath} не существует. Создаём файл {FilePath} и записываем в него число 50");
+                    File.WriteAllText(FilePath, "50");
+                }
+
+                 
                 Console.WriteLine($"Количество групп: {(int)Math.Log(GetNumber(FilePath), 2) + 1}");
 
                 //конец замера время выполнения 
@@ -152,27 +163,21 @@ namespace Homework_6_Source_Task_1
                 Console.WriteLine($"Время выполнения: {stopWatch.ElapsedMilliseconds / 1000} секунд {stopWatch.ElapsedMilliseconds} миллисекунд");
             } else //режим 2
             {
-                //проверка существования директории
-                /*
-                while (!Directory.Exists(OutDirectory))
-                {
-                    Console.WriteLine(@"Введите путь до директории вывода в формате C:\Dir\Subdir\");
-                    OutDirectory = Console.ReadLine();
-                }
 
-                while (!File.Exists(FilePath) || GetNumber(FilePath) == 0)
+                if (!File.Exists(FilePath))
                 {
-                    Console.WriteLine(@"Введите имя файла в формате file.txt Файл должен содержать только число в начале первой строки");
-                    FilePath = $"{OutDirectory}{Console.ReadLine()}";
+                    Console.WriteLine($"Файл {FilePath} не существует. Создаём файл {FilePath} и записываем в него число 50");
+                    File.WriteAllText(FilePath, "50");
                 }
-                */
 
                 //начало замера время выполнения 
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
 
                 string OutFile = $"{OutFileName}";
-                WriteFile(OutFile, string.Join("\r\n", GroupsNumbers(GetNumber(FilePath)).Select(gr => string.Join(", ", gr))));
+                //WriteFile(OutFile, string.Join("\r\n", GroupsNumbers(GetNumber(FilePath)).Select(gr => string.Join(", ", gr))));
+
+                GroupsNumbers(GetNumber(FilePath), OutFile);
 
                 //конец замера время выполнения 
                 stopWatch.Stop();
