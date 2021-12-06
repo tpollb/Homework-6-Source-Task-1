@@ -10,6 +10,7 @@ namespace Homework_6_Source_Task_1
     class Program
     {
 
+        /*
         /// <summary>
         /// метод, определяющий свойсво делимости
         /// </summary>
@@ -61,6 +62,7 @@ namespace Homework_6_Source_Task_1
             }
             return groups;
         }
+        */
 
         /// <summary>
         /// метод считывающий число из файла
@@ -81,21 +83,34 @@ namespace Homework_6_Source_Task_1
             return result;
         }
 
-        /*
+        
         /// <summary>
         /// Метод записи строки в файл
         /// </summary>
         /// <param name="filepath">путь к файлу</param>
         /// <param name="Source">строка для записи</param>
-        static public void WriteFile(string filepath, string Source)
+        static public void WriteFile(string filepath, int rows)
         {
+            int n = 1;
             using (StreamWriter sw = new StreamWriter(filepath, true, System.Text.Encoding.Default))
             {
-                sw.WriteLine($"{Source}");
+                for (int i = 0; i < rows; i++)
+                {
+
+                    for (int j = n; j < n * 2; j++)
+                    {
+
+                        {
+                            sw.Write($"{j} ");
+                        }
+                    }
+                    sw.WriteLine();
+                    n *= 2;
+                }
                 sw.Close();
             }
         }
-        */
+        
 
         /// <summary>
         /// Метод архивации файла
@@ -177,7 +192,7 @@ namespace Homework_6_Source_Task_1
                 string OutFile = $"{OutFileName}";
                 //WriteFile(OutFile, string.Join("\r\n", GroupsNumbers(GetNumber(FilePath)).Select(gr => string.Join(", ", gr))));
 
-                GroupsNumbers(GetNumber(FilePath), OutFile);
+                WriteFile(OutFile, (int)Math.Log(GetNumber(FilePath), 2) + 1);
 
                 //конец замера время выполнения 
                 stopWatch.Stop();
